@@ -12,18 +12,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        if(R.id.fragmentContainerView != null) {
-//            if (savedInstanceState == null) {
-//                supportFragmentManager
-//                    .beginTransaction()
-//                    .add(R.id.fragmentContainerView, DieFragment())
-//                    .commit()
-//            }
-
         findViewById<Button>(R.id.rollDiceButton).setOnClickListener {
             (supportFragmentManager
                 .findFragmentById(R.id.fragmentContainerView) as DieFragment).throwDie()
+            (supportFragmentManager
+                .findFragmentById(R.id.fragmentContainerView2) as DieFragment).throwDie()
         }
-        //need to implement savedInstanceState when a fragment is destroyed/recreated
     }
 }
