@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import kotlin.random.Random
 
 class DieFragment : Fragment() {
@@ -19,6 +20,8 @@ class DieFragment : Fragment() {
 
     var dieSides: Int = 6
 
+    lateinit var dieViewModel: DieViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -26,6 +29,8 @@ class DieFragment : Fragment() {
                 dieSides = this
             }
         }
+        //dieViewModel = ViewModelProvider(requireActivity()).get(DieViewModel::class.java)
+        dieViewModel = ViewModelProvider(this)[DieViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -41,21 +46,29 @@ class DieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState == null)
-            throwDie()
-        else{
-            currentDieValue = savedInstanceState.getInt(PREVIOUS_DIE_VALUE)
-            dieTextView.text = currentDieValue.toString()
-        }
-    }
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
 
-        outState.putInt(PREVIOUS_DIE_VALUE, currentDieValue)
+        dieViewModel.getCurrentRoll().observe(viewLifecycleOwner) {
+            dieTextView.text = it.toString()
+        }
+
+        //if (savedInstanceState == null)
+//        throwDie()
+//        else{
+//            currentDieValue = savedInstanceState.getInt(PREVIOUS_DIE_VALUE)
+//            dieTextView.text = currentDieValue.toString()
+//        }
+        if(dieViewModel.getCurrentRoll().value == null)
+            throwDie()
     }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//
+//        outState.putInt(PREVIOUS_DIE_VALUE, currentDieValue)
+//    }
 
     fun throwDie() {
-        currentDieValue = (Random.nextInt(dieSides) + 1)
-        dieTextView.text = currentDieValue.toString()
+        //currentDieValue = (Random.nextInt(dieSides) + 1)
+        //dieTextView.text = currentDieValue.toString()
+        dieViewModel.setCurrentRoll(Random.nextInt(dieSides) + 1)
     }
 }
