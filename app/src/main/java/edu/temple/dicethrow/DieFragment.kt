@@ -30,7 +30,7 @@ class DieFragment : Fragment() {
             }
         }
         //dieViewModel = ViewModelProvider(requireActivity()).get(DieViewModel::class.java)
-        dieViewModel = ViewModelProvider(this)[DieViewModel::class.java]
+        dieViewModel = ViewModelProvider(requireActivity())[DieViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -58,7 +58,7 @@ class DieFragment : Fragment() {
 //            dieTextView.text = currentDieValue.toString()
 //        }
         if(dieViewModel.getCurrentRoll().value == null)
-            throwDie()
+            dieViewModel.rollDie()
     }
 //    override fun onSaveInstanceState(outState: Bundle) {
 //        super.onSaveInstanceState(outState)
@@ -66,9 +66,9 @@ class DieFragment : Fragment() {
 //        outState.putInt(PREVIOUS_DIE_VALUE, currentDieValue)
 //    }
 
-    fun throwDie() {
-        //currentDieValue = (Random.nextInt(dieSides) + 1)
-        //dieTextView.text = currentDieValue.toString()
-        dieViewModel.setCurrentRoll(Random.nextInt(dieSides) + 1)
-    }
+//    fun throwDie() {
+//        //currentDieValue = (Random.nextInt(dieSides) + 1)
+//        //dieTextView.text = currentDieValue.toString()
+//        dieViewModel.setCurrentRoll(Random.nextInt(dieSides) + 1)
+//    }
 }
